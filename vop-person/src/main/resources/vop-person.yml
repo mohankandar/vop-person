@@ -1,0 +1,216 @@
+# Global Server and Build Settings
+# Learn: https://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html#howto-use-yaml-for-external-properties
+info:
+  build:
+    version:  "@project.version@"
+    artifact: "@project.artifactId@"
+    name: "@project.name@"
+    description: "@project.description@"
+server:
+  port: 8080
+  max-http-header-size: 65536
+---
+spring.profiles: default
+spring.profiles.include: remote_client_sims, embedded-redis
+vop-person:
+  ribbon:
+    listOfServers: localhost:${server.port}
+---
+spring.profiles: local-int, ci, dev, stage, prod
+spring.profiles.include: remote_client_sims
+---
+spring.profiles: local-int, ci, dev
+spring.profiles.include: embedded-redis
+---
+spring.profiles: local-int, ci
+vop.framework.security.opa:
+  enabled: false # OPAEnablement: Set this to true if you want to enable OPA
+---
+spring.profiles: local-int
+vop.framework.security.opa:
+  urls:
+  - http://opa:8181/v1/data/vop/http/authz/admin
+  - http://opa:8181/v1/data/vop/http/authz/allow
+  allVotersAbstainGrantAccess: false
+---
+spring:
+  cache:
+    type: redis
+  config.use-legacy-processing: true
+  # Properties for org.springframework.boot.autoconfigure.data.redis.RedisProperties
+  redis:
+    ssl: false
+    host: localhost
+    port: 6379
+    # password:    # If host takes a password
+    # url:         # URL overrides host/port/password
+    # database: 0  # The database index to use
+    # timeout:     # Connection timeout (millis)
+    # Jedis is activated by being on the classpath
+    jedis:
+      # At least one variable *must* be set in order to enable the pool
+      pool:
+        # max-idle: 8   # Max number of idle connections in the pool
+        # min-idle: 0   # Min number of idle connections to maintain
+        # max-active: 8 # Max number of allocated connections (-1 for unlimited)
+        max-wait: -1    # Max wait millis when pool is exhausted (-1 for unlimited)
+    # cluster:
+      # max-redirects: # Maximum number of redirects to follow when executing commands across the cluster
+      # nodes:         # Comma-separated list of "host:port" pairs to bootstrap from
+    # sentinel:
+      # master:  # Name of the Redis server
+      # nodes:   # Comma-separated list of "host:port" pairs
+  security:
+    basic:
+      enabled: false
+    user:
+      name: ${vop.framework.security.username:admin}
+      password: ${vop.framework.security.password:default}
+  # spring jackson mapper, serialization and deserialization global settings
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    serialization-inclusion: NON_EMPTY
+    default-property-inclusion: NON_EMPTY
+    serialization:
+      indent_output: true
+      write-dates-as-timestamps: false
+    deserialization:
+      FAIL_ON_IGNORED_PROPERTIES: false
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+  liquibase.enabled: false
+
+# service.context: http://localhost:8080
+
+#management.endpoints.enabled-by-default: true
+# expose all endpoints:
+management.endpoints.web.exposure.include: "*"
+# disable beans endpoint
+management.endpoint.beans.enabled: false
+management.endpoint.health.show-details: "ALWAYS"
+management:
+  health:
+    diskspace:
+      enabled: true
+    refresh:
+      enabled: true
+    redis:
+      enabled: true
+#Application Custom Properties
+vop-person:
+  propSource: internal
+  password: secret
+  sampleProperty: >
+                  sampleProperty___env/profile:${vop-person.env}___propSource:
+                  ${vop-person.propSource}__password:${vop-person.password}
+#-##################################################
+# Logging Level for packages
+#-##################################################
+logging:
+  level:
+    feign: WARN
+    # Add partner logging here, example:
+    #com.wynd.vop.person.[partner-name].client: INFO
+#     com.wynd.vop.person: DEBUG
+    com.wynd.vop.framework.audit: DEBUG
+    # Change Value to DEBUG to log all application logs
+    com.wynd.vop.person: DEBUG
+    # Change Value to DEBUG to log all VOP framework logs
+    com.wynd.vop.framework: INFO
+#    org.apache.http: DEBUG
+    org.apache.coyote: DEBUG
+    org.apache.http.impl.client: WARN
+    org.apache.tomcat.util.buf: DEBUG
+    org.springframework.cache: DEBUG
+    org.springframework.cloud.openfeign: WARN
+    org.springframework.cloud.sleuth: WARN
+    org.springframework.core.convert: WARN
+    org.springframework.format: WARN
+    org.springframework.retry: WARN
+    org.springframework.security: DEBUG
+    org.springframework.security.web: WARN
+    org.springframework.web.client: WARN
+    org.springframework.ws: WARN
+    sun.net.www.protocol: WARN
+
+    org.springframework.data.redis: DEBUG
+    # Swagger
+    springfox.documentation: DEBUG
+    springfox.documentation.spring.web: DEBUG
+    io.swagger: DEBUG
+    org.springframework.boot.context.config: DEBUG
+    org.springframework.core.env: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: DEBUG
+    org.springframework: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet: DEBUG
+
+    org.springframework.jmx: DEBUG
+    java.management=com.sun.jmx.mbeanserver: DEBUG
+    org.springframework.beans.factory.support: DEBUG
+    org.springframework.context.annotation: DEBUG
+##################################################
+# Ribbon timeout, server refresh interval, retry
+# settings for the requests
+##################################################
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 5000
+  ServerListRefreshInterval: 10000
+  MaxAutoRetries: 2
+  MaxAutoRetriesNextServer: 2
+  OkToRetryOnAllOperations: true
+
+###############################################################################
+#Property configuration to enable or disable JWT security for the service calls
+#JWT security is enabled by default. So to disable it you have to
+#set the environment system property vop.person.security.jwt.enabled=false
+###############################################################################
+vop.framework:
+  security:
+    jwt:
+      enabled: false
+      filterProcessUrls:
+        - /api/v1/person/**
+        - /api/v2/person/**
+      excludeUrls:
+        - /api/v1/token
+        - /*
+  swagger:
+    # enable/disable the swagger/openapi UI ...
+    enabled: true
+
+##################################################
+# Feign or REST client connection timeout
+# when making inter-service or external REST calls
+##################################################
+  rest:
+    client:
+      connectionTimeout: 30000
+      readTimeout: 60000
+      maxTotalPool: 5
+      defaultMaxPerRoutePool: 10
+      validateAfterInactivityPool: 10000
+      connectionBufferSize: 4128
+##################################################
+# Cache
+##################################################
+  cache:
+    defaultExpires: 86400 # (Seconds)
+    expires:
+#     -
+#       name: Cache Name
+#       ttl:  TTL (In Seconds)
+      -
+        name: personService_@project.name@_@project.version@
+        ttl: 1800
+##################################################
+# Sleuth configuration
+# To skip specific patterns being exported, added few more customs on top of default skip pattern
+# see org.springframework.cloud.sleuth.instrument.web.TraceFilter.DEFAULT_SKIP_PATTERN
+##################################################
+spring.sleuth.web.skipPattern: (/api/.*/webjars.*|/api/.*/v2/api-docs.*|/api/.*/swagger-resources.*|/api/.*/swagger-ui.*|/api-docs.*|/autoconfig|/configprops|/dump|/health|/info|/metrics.*|/mappings|/trace|/swagger.*|.*\\.png|.*\\.css|.*\\.js|.*\\.html|/favicon.ico|/hystrix.stream)
+# comma separated list of matchers
+spring.sleuth.rxjava.schedulers.ignoredthreads: HystixMetricPoller,^RxComputation.*$,^RxIoScheduler.*$
+
+
