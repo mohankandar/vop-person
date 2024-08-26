@@ -1,0 +1,660 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.wynd.vop.person</groupId>
+    <artifactId>vop-person-reactor</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
+
+  <artifactId>vop-person</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>${project.artifactId}</name>
+  <description>Person Service Implementation for VOP Project</description>
+
+
+  <properties>
+    <vop-framework.version>1.0.2</vop-framework.version>
+    <!-- Performance test Config - Need more setup- How to privide input sheet -->
+    <domain>localhost</domain>
+    <port>8080</port>
+    <protocol>http</protocol>
+    <Health.threadGroup.threads>5</Health.threadGroup.threads>
+    <Health.threadGroup.rampUp>2</Health.threadGroup.rampUp>
+    <Health.threadGroup.loopCount>10</Health.threadGroup.loopCount>
+    <Health.threadGroup.duration>200</Health.threadGroup.duration>
+    <Health.threadGroup.startUpDelay>5</Health.threadGroup.startUpDelay>
+    <SampleInfo.threadGroup.threads>5</SampleInfo.threadGroup.threads>
+    <SampleInfo.threadGroup.rampUp>2</SampleInfo.threadGroup.rampUp>
+    <SampleInfo.threadGroup.loopCount>10</SampleInfo.threadGroup.loopCount>
+    <SampleInfo.threadGroup.duration>200</SampleInfo.threadGroup.duration>
+    <SampleInfo.threadGroup.startUpDelay>5</SampleInfo.threadGroup.startUpDelay>
+    <SampleInfoNoRecordFound.threadGroup.threads>5</SampleInfoNoRecordFound.threadGroup.threads>
+    <SampleInfoNoRecordFound.threadGroup.rampUp>2</SampleInfoNoRecordFound.threadGroup.rampUp>
+    <SampleInfoNoRecordFound.threadGroup.loopCount>10</SampleInfoNoRecordFound.threadGroup.loopCount>
+    <SampleInfoNoRecordFound.threadGroup.duration>200</SampleInfoNoRecordFound.threadGroup.duration>
+    <SampleInfoNoRecordFound.threadGroup.startUpDelay>5</SampleInfoNoRecordFound.threadGroup.startUpDelay>
+    <SampleInfoInvalidPid.threadGroup.threads>5</SampleInfoInvalidPid.threadGroup.threads>
+    <SampleInfoInvalidPid.threadGroup.rampUp>2</SampleInfoInvalidPid.threadGroup.rampUp>
+    <SampleInfoInvalidPid.threadGroup.loopCount>10</SampleInfoInvalidPid.threadGroup.loopCount>
+    <SampleInfoInvalidPid.threadGroup.duration>200</SampleInfoInvalidPid.threadGroup.duration>
+    <SampleInfoInvalidPid.threadGroup.startUpDelay>5</SampleInfoInvalidPid.threadGroup.startUpDelay>
+    <SampleInfoNullPid.threadGroup.threads>5</SampleInfoNullPid.threadGroup.threads>
+    <SampleInfoNullPid.threadGroup.rampUp>2</SampleInfoNullPid.threadGroup.rampUp>
+    <SampleInfoNullPid.threadGroup.loopCount>10</SampleInfoNullPid.threadGroup.loopCount>
+    <SampleInfoNullPid.threadGroup.duration>200</SampleInfoNullPid.threadGroup.duration>
+    <SampleInfoNullPid.threadGroup.startUpDelay>5</SampleInfoNullPid.threadGroup.startUpDelay>
+    <BearerTokenCreate.threadGroup.threads>5</BearerTokenCreate.threadGroup.threads>
+    <BearerTokenCreate.threadGroup.rampUp>1</BearerTokenCreate.threadGroup.rampUp>
+    <BearerTokenCreate.threadGroup.loopCount>1</BearerTokenCreate.threadGroup.loopCount>
+  </properties>
+
+  <dependencies>
+        <dependency>
+          <groupId>com.wynd.vop.framework</groupId>
+          <artifactId>vop-framework-libraries</artifactId>
+          <version>${vop-framework.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>com.wynd.vop.framework</groupId>
+          <artifactId>vop-framework-autoconfigure</artifactId>
+          <version>${vop-framework.version}</version>
+        </dependency>
+
+    <!-- spring-boot dependencies -->
+    <!-- Spring Boot starter for Tomcat, which provides embedded Tomcat server for your Spring Boot application. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+    </dependency>
+    <!-- Spring Boot configuration processor, used for generating metadata for configuration properties. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+      <!-- Optional dependency, used only during compile time. -->
+    </dependency>
+    <!-- Spring Cloud starter for bootstrap, used for loading configuration from external sources like Consul, Config Server, etc. -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+      <exclusions>
+        <!-- Excluding the BouncyCastle provider library which might conflict with other security configurations. -->
+        <exclusion>
+          <groupId>org.bouncycastle</groupId>
+          <artifactId>bcprov-jdk15on</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- Spring Boot starter for Aspect-Oriented Programming (AOP), useful for implementing cross-cutting concerns like logging and transactions. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+    <!--
+    Spring Cloud Sleuth is a distributed tracing library that helps with tracking and diagnosing
+    requests as they travel across multiple microservices. It provides automatic generation
+    of trace IDs and span IDs to correlate logs and track the flow of requests across a
+    distributed system. It integrates with tracing systems like Zipkin or OpenTelemetry,
+    facilitating better visibility and debugging capabilities for complex architectures.-->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-sleuth</artifactId>
+    </dependency>
+    <!-- Logstash Logback encoder for formatting log messages in Logstash format, often used with ELK stack for log analysis. -->
+    <dependency>
+      <groupId>net.logstash.logback</groupId>
+      <artifactId>logstash-logback-encoder</artifactId>
+    </dependency>
+    <!-- Janino is a lightweight Java compiler used for runtime compilation. -->
+    <dependency>
+      <groupId>org.codehaus.janino</groupId>
+      <artifactId>janino</artifactId>
+    </dependency>
+    <!-- Jackson JAX-RS base module for JSON processing in JAX-RS (Java API for RESTful Web Services). -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-base</artifactId>
+    </dependency>
+    <!-- Jackson JAX-RS JSON provider for serializing and deserializing JSON data in JAX-RS. -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-json-provider</artifactId>
+    </dependency>
+    <!-- Jackson module for JAXB annotations, used to provide JAXB (Java Architecture for XML Binding) annotations for JSON processing. -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-jaxb-annotations</artifactId>
+    </dependency>
+    <!-- Jackson core annotations for JSON processing. -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <!-- OpenAPI Generator library for generating API client libraries, server stubs, and API documentation. -->
+    <dependency>
+      <groupId>org.openapitools</groupId>
+      <artifactId>openapi-generator</artifactId>
+      <exclusions>
+        <!-- Excluding conflicting or unnecessary dependencies that are not required for your use case. -->
+        <exclusion>
+          <groupId>javax.activation</groupId>
+          <artifactId>activation</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.github.fge</groupId>
+          <artifactId>jackson-coreutils</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.swagger.core.v3</groupId>
+          <artifactId>swagger-annotations</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>joda-time</groupId>
+          <artifactId>joda-time</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.swagger</groupId>
+          <artifactId>swagger-annotations</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.google.code.findbugs</groupId>
+          <artifactId>jsr305</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- Jolokia core for JMX (Java Management Extensions) monitoring and management over HTTP. -->
+    <dependency>
+      <groupId>org.jolokia</groupId>
+      <artifactId>jolokia-core</artifactId>
+    </dependency>
+    <!-- Apache Commons Lang3 provides extra functionality for working with Java core classes, such as `String` and `Number`. -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <!-- Spring Boot starter for test utilities, including JUnit, Hamcrest, and Mockito. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test
+      </scope>
+      <!-- Scope is set to test, meaning this dependency is only used during testing. -->
+    </dependency>
+    <!-- JUnit Vintage engine for running JUnit 3 and 4 tests on JUnit 5 platform. -->
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- JsonPath library for parsing and querying JSON data. Useful for writing JSON-based test assertions. -->
+    <dependency>
+      <groupId>com.jayway.jsonpath</groupId>
+      <artifactId>json-path</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Test dependendency -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.google.auto.service</groupId>
+      <artifactId>auto-service</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <!--
+          The Templating Maven Plugin is used to process and filter template files in a Maven project.
+
+          This plugin is specifically configured to handle the generation and filtering of Java source files
+          from a set of template files. The main tasks performed by this plugin include:
+
+          1. **Filtering Templates**: The plugin processes template files from the specified `sourceDirectory`,
+             replacing placeholders with values defined in the project properties (e.g., in the POM file).
+
+          2. **Generating Java Source Files**: It generates Java source files in the `outputDirectory`,
+             which are then included in the project's build process. This is useful for generating classes
+             that require property values or constants defined in the POM file.
+
+          3. **Usage of Generated Files**: For example, it generates `ApplicationInfo.java` in the
+             `src/java-template` directory, which contains properties from `project.*` to be used
+             within the Java source code.
+
+          By using this plugin, you ensure that the generated source files are up-to-date with the
+          latest property values and are correctly placed in the build output directory.
+
+          **Configuration Details:**
+          - `sourceDirectory`: Specifies the location of the template files (`src/main/java-template`).
+          - `outputDirectory`: Specifies where the processed files should be outputted
+            (`${project.build.directory}/generated-sources/java-template`).
+
+          For more information on how the plugin works and to see an example of the generated files,
+          refer to the `ApplicationInfo.java` in the `src/java-template` directory.
+        -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>templating-maven-plugin</artifactId>
+        <version>${templating-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>filtering-java-templates</id>
+            <goals>
+              <goal>filter-sources</goal>
+            </goals>
+            <configuration>
+              <sourceDirectory>${basedir}/src/main/java-template</sourceDirectory>
+              <outputDirectory>${project.build.directory}/generated-sources/java-template
+              </outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!--
+        The Build Helper Maven Plugin is used to enhance the Maven build process by adding additional sources
+        or resources that are not automatically included in the standard build lifecycle.
+
+        In this specific configuration, the plugin is used to include the generated Java source files produced
+        by the `templating-maven-plugin` plugin into the Maven build.
+
+        **Purpose:**
+        - **Add Generated Sources**: This plugin configuration ensures that the Java source files generated
+        by the `templating-maven-plugin` (found in `${project.build.directory}/generated-sources/java-template`)
+        are added to the project's source path. This allows these generated files to be compiled along with
+        the rest of the project's source code.
+
+        **Configuration Details:**
+        - `id`: The identifier for this plugin execution. Here it is set to `add-source`.
+        - `phase`: Specifies the build phase during which this execution should run. In this case, it's set to
+        `generate-sources`, which means the plugin will execute during the `generate-sources` phase of the build lifecycle.
+        - `goal`: Specifies the goal to execute, which is `add-source` in this configuration.
+        - `sources`: Defines the directory containing the additional source files to be included. It points to
+        `${project.build.directory}/generated-sources/java-template`, where the `templating-maven-plugin`
+        generates its output.
+
+        By configuring this plugin, you ensure that the generated source files are correctly incorporated into
+        the build process, allowing them to be compiled and included in the final build artifact.-->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/java-template</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <!-- NOT USED NOW - PLANNING for next release
+    The 'inttest' profile is used for integration testing in the Maven build lifecycle.
+    This profile configures specific plugins to handle integration tests and generate
+    Cucumber reports when the profile is activated.
+
+    **Plugins Configured:**
+    1. **maven-failsafe-plugin**:
+       - **Purpose**: Used for running integration tests.
+       - **GroupId**: `org.apache.maven.plugins`
+       - **ArtifactId**: `maven-failsafe-plugin`
+       - **Configuration Details**:
+         - This plugin is responsible for running tests that are classified as integration tests.
+         - It is typically used in conjunction with the `maven-surefire-plugin`, which handles unit tests.
+         - The integration tests are usually placed in the `src/test/java` directory and follow the naming convention of `*IT.java`.
+
+    2. **maven-cucumber-reporting**:
+       - **Purpose**: Generates reports for Cucumber tests.
+       - **GroupId**: `net.masterthought`
+       - **ArtifactId**: `maven-cucumber-reporting`
+       - **Configuration Details**:
+         - This plugin creates detailed HTML reports for Cucumber BDD (Behavior-Driven Development) tests.
+         - It helps visualize test results and provides insights into the test execution and coverage.
+
+    **Usage:**
+    - To activate this profile, use the `-P inttest` option when running Maven commands.
+    - This will include the specified plugins in the build process, allowing integration tests to be executed and Cucumber reports to be generated.
+
+    Example Maven command to activate the profile and run integration tests:
+    mvn verify -P inttest
+    This command will run both unit and integration tests, and if applicable, generate Cucumber reports based on the configuration.
+  -->
+    <profile>
+      <id>inttest</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>net.masterthought</groupId>
+            <artifactId>maven-cucumber-reporting</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!--
+      The 'org-openapitools-codegen-person' profile is used to generate Java code from an OpenAPI specification.
+      This profile is activated when the specified OpenAPI YAML file exists, enabling the generation of API clients, models,
+      and other code artifacts based on the OpenAPI specification.
+
+      **Activation:**
+      - The profile is activated if the file `${basedir}/src/main/resources/openapi/openapi.yml` exists.
+      - This YAML file should contain the OpenAPI specification used to generate the Java code.
+
+      **Plugins Configured:**
+      1. **openapi-generator-maven-plugin**:
+         - **Purpose**: Generates Java code based on the OpenAPI specification provided.
+         - **GroupId**: `org.openapitools`
+         - **ArtifactId**: `openapi-generator-maven-plugin`
+         - **Version**: `${openapi.codegen.version}`
+         - **Configuration Details**:
+           - **inputSpec**: Path to the OpenAPI YAML file.
+           - **output**: Directory where the generated sources will be placed.
+           - **ignoreFileOverride**: Path to a file listing files and directories to ignore during code generation.
+           - **apiPackage**: Package name for the generated API interfaces.
+           - **modelPackage**: Package name for the generated model classes.
+           - **importMappings**: Custom mappings for types to import from other packages.
+           - **addCompileSourceRoot**: Whether to add the generated sources as a compile source root. Set to `false`.
+           - **configHelp**: Whether to include configuration help. Set to `false`.
+           - **verbose**: Whether to enable verbose output. Set to `false`.
+           - **generatorName**: Code generator to use. Set to `spring`.
+           - **generateApiDocumentation**: Whether to generate API documentation. Set to `false`.
+           - **generateApiTests**: Whether to generate API tests. Set to `false`.
+           - **generateApis**: Whether to generate API interfaces. Set to `true`.
+           - **generateModels**: Whether to generate model classes. Set to `true`.
+           - **generateModelTests**: Whether to generate model tests. Set to `false`.
+           - **generateModelDocumentation**: Whether to generate model documentation. Set to `false`.
+           - **generateSupportingFiles**: Whether to generate supporting files. Set to `false`.
+           - **languageSpecificPrimitives**: Whether to generate language-specific primitives. Set to `true`.
+           - **templateDirectory**: Directory containing custom Mustache templates for code generation.
+           - **configOptions**: Additional configuration options for the code generation:
+             - `serializableModel`: Whether models should be serializable. Set to `true`.
+             - `sourceFolder`: Folder name for the generated sources. Set to `openapi`.
+             - `interfaceOnly`: Whether to generate only interfaces. Set to `true`.
+             - `implicitHeaders`: Whether to include implicit headers in the API requests. Set to `false`.
+             - `java8`: Whether to use Java 8 features. Set to `false`.
+             - `useBeanValidation`: Whether to use bean validation annotations. Set to `true`.
+             - `performBeanValidation`: Whether to perform bean validation. Set to `true`.
+             - `useTags`: Whether to use tags for organizing operations. Set to `true`.
+             - `swaggerDocketConfig`: Whether to include Swagger Docket configuration. Set to `false`.
+
+      **Plugin Management:**
+      - The `pluginManagement` section is used to configure plugins that may be used by other Maven plugins or IDE tools, specifically for Eclipse, STS, and m2e integration.
+      - It includes lifecycle mappings for the `openapi-generator-maven-plugin`, `replacer` plugin, and `maven-antrun-plugin`.
+
+      **Usage:**
+      - To activate this profile, ensure the OpenAPI YAML file exists at the specified path and use the `-P org-openapitools-codegen-person` option when running Maven commands.
+
+      Example Maven command to activate the profile and generate code:
+      mvn clean install -P org-openapitools-codegen-person
+    -->
+    <profile>
+      <id>org-openapitools-codegen-person</id>
+      <activation>
+        <file>
+          <exists>${basedir}/src/main/resources/openapi/openapi.yml</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.openapitools</groupId>
+            <artifactId>openapi-generator-maven-plugin</artifactId>
+            <version>${openapi.codegen.version}</version>
+            <executions>
+              <execution>
+                <id>generate-openapi-person</id>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <inputSpec>${basedir}/src/main/resources/openapi/openapi.yml</inputSpec>
+                  <output>${project.build.directory}/generated-sources</output>
+                  <ignoreFileOverride>${basedir}/.openapi-generator-ignore</ignoreFileOverride>
+                  <apiPackage>com.wynd.vop.person.api</apiPackage>
+                  <modelPackage>com.wynd.vop.person.api.model.v1</modelPackage>
+                  <importMappings>
+                    ProviderResponse=com.wynd.vop.framework.rest.provider.ProviderResponse,
+                    ProviderRequest=com.wynd.vop.framework.rest.provider.ProviderRequest,
+                    Message=com.wynd.vop.framework.rest.provider.Message,
+                    Person=com.wynd.vop.framework.security.model.Person,
+                    ProviderTransferObjectMarker=com.wynd.vop.framework.transfer.ProviderTransferObjectMarker
+                  </importMappings>
+                  <addCompileSourceRoot>false</addCompileSourceRoot>
+                  <configHelp>false</configHelp>
+                  <verbose>false</verbose>
+                  <generatorName>spring</generatorName>
+                  <generateApiDocumentation>false</generateApiDocumentation>
+                  <generateApiTests>false</generateApiTests>
+                  <generateApis>true</generateApis>
+                  <generateModels>true</generateModels>
+                  <generateModelTests>false</generateModelTests>
+                  <generateModelDocumentation>false</generateModelDocumentation>
+                  <generateSupportingFiles>false</generateSupportingFiles>
+                  <languageSpecificPrimitives>true</languageSpecificPrimitives>
+                  <templateDirectory>${basedir}/src/main/resources/openapi/mustache
+                  </templateDirectory>
+                  <configOptions>
+                    <serializableModel>true</serializableModel>
+                    <sourceFolder>openapi</sourceFolder>
+                    <interfaceOnly>true</interfaceOnly>
+                    <implicitHeaders>false</implicitHeaders>
+                    <java8>false</java8>
+                    <useBeanValidation>true</useBeanValidation>
+                    <performBeanValidation>true</performBeanValidation>
+                    <useTags>true</useTags>
+                    <swaggerDocketConfig>false</swaggerDocketConfig>
+                  </configOptions>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+        <!-- the following is only necessary if you are using eclipse, STS and m2e -->
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.eclipse.m2e</groupId>
+              <artifactId>lifecycle-mapping</artifactId>
+              <configuration>
+                <lifecycleMappingMetadata>
+                  <pluginExecutions>
+                    <pluginExecution>
+                      <pluginExecutionFilter>
+                        <groupId>org.openapitools</groupId>
+                        <artifactId>openapi-generator-maven-plugin</artifactId>
+                        <versionRange>[${openapi.codegen.version},)</versionRange>
+                        <goals>
+                          <goal>generate</goal>
+                        </goals>
+                      </pluginExecutionFilter>
+                      <action>
+                        <execute/>
+                      </action>
+                    </pluginExecution>
+                    <pluginExecution>
+                      <pluginExecutionFilter>
+                        <groupId>com.google.code.maven-replacer-plugin</groupId>
+                        <artifactId>replacer</artifactId>
+                        <versionRange>[${google.codereplacer.version},)</versionRange>
+                        <goals>
+                          <goal>replace</goal>
+                        </goals>
+                      </pluginExecutionFilter>
+                      <action>
+                        <execute/>
+                      </action>
+                    </pluginExecution>
+                    <pluginExecution>
+                      <pluginExecutionFilter>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <versionRange>[${maven-antrun-plugin.version},)</versionRange>
+                        <goals>
+                          <goal>run</goal>
+                        </goals>
+                      </pluginExecutionFilter>
+                      <action>
+                        <execute/>
+                      </action>
+                    </pluginExecution>
+                  </pluginExecutions>
+                </lifecycleMappingMetadata>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+    <!--
+  The 'perftest' profile is designed for configuring and executing performance tests using Apache JMeter through Maven.
+  This profile is configured to manage performance testing parameters and setup.
+
+  **Plugins Configured:**
+  1. **jmeter-maven-plugin**:
+   - **Purpose**: This plugin integrates JMeter into the Maven build process, allowing you to run performance tests and manage test parameters.
+   - **GroupId**: `com.lazerycode.jmeter`
+   - **ArtifactId**: `jmeter-maven-plugin`
+   - **Configuration Details**:
+     - **skip**: Controls whether the performance tests should be skipped. The value is provided by the `${skipPerfTests}` property, which can be set to `true` to skip the tests.
+   - **Executions**:
+     - **Execution ID**: `jmeter-configuration`
+     - **Goals**:
+     - `configure`: This goal configures the JMeter test setup using the provided properties.
+  **Plugin Management:**
+  - The `pluginManagement` section is used to configure Eclipse m2e lifecycle mapping settings. These settings do not affect the Maven build itself but ensure proper integration with Eclipse and STS IDEs.
+  - **Plugin**:
+  - **GroupId**: `org.eclipse.m2e`
+  - **ArtifactId**: `lifecycle-mapping`
+  - **Version**: `${lifecycle.mapping.version}`
+  - **Configuration**:
+    - **lifecycleMappingMetadata**:
+    - **pluginExecutions**:
+      - **pluginExecution**:
+      - **pluginExecutionFilter**: Defines which plugin executions should be handled by the lifecycle mapping.
+      - **action**: Specifies the action to take for the matched plugin executions. In this case, it is set to `ignore`.
+
+  **Usage:**
+  - To activate this profile and run performance tests, use the `-P perftest` option when executing Maven commands.
+  - Example Maven command to activate the profile and run performance tests:
+  ```
+  mvn clean verify -P perftest
+-->
+    <profile>
+      <id>perftest</id>
+      <build>
+        <plugins>
+          <!-- JMeter Maven Plugin to set performance test -D parameters-->
+          <plugin>
+            <groupId>com.lazerycode.jmeter</groupId>
+            <artifactId>jmeter-maven-plugin</artifactId>
+            <configuration>
+              <skip>${skipPerfTests}</skip>
+            </configuration>
+            <executions>
+              <execution>
+                <id>jmeter-configuration</id>
+                <goals>
+                  <goal>configure</goal>
+                </goals>
+                <configuration>
+                  <propertiesUser>
+                    <baseurl>${domain}</baseurl>
+                    <domain>${domain}</domain>
+                    <port>${port}</port>
+                    <protocol>${protocol}</protocol>
+                    <Health.threadGroup.threads>${Health.threadGroup.threads}</Health.threadGroup.threads>
+                    <Health.threadGroup.rampUp>${Health.threadGroup.rampUp}</Health.threadGroup.rampUp>
+                    <Health.threadGroup.loopCount>${Health.threadGroup.loopCount}</Health.threadGroup.loopCount>
+                    <Health.threadGroup.duration>${Health.threadGroup.duration}</Health.threadGroup.duration>
+                    <Health.threadGroup.startUpDelay>${Health.threadGroup.startUpDelay}</Health.threadGroup.startUpDelay>
+                    <SampleInfo.threadGroup.threads>${SampleInfo.threadGroup.threads}</SampleInfo.threadGroup.threads>
+                    <SampleInfo.threadGroup.rampUp>${SampleInfo.threadGroup.rampUp}</SampleInfo.threadGroup.rampUp>
+                    <SampleInfo.threadGroup.loopCount>${SampleInfo.threadGroup.loopCount}</SampleInfo.threadGroup.loopCount>
+                    <SampleInfo.threadGroup.duration>${SampleInfo.threadGroup.duration}</SampleInfo.threadGroup.duration>
+                    <SampleInfo.threadGroup.startUpDelay>${SampleInfo.threadGroup.startUpDelay}</SampleInfo.threadGroup.startUpDelay>
+                    <SampleInfoNoRecordFound.threadGroup.threads>${SampleInfoNoRecordFound.threadGroup.threads}</SampleInfoNoRecordFound.threadGroup.threads>
+                    <SampleInfoNoRecordFound.threadGroup.rampUp>${SampleInfoNoRecordFound.threadGroup.rampUp}</SampleInfoNoRecordFound.threadGroup.rampUp>
+                    <SampleInfoNoRecordFound.threadGroup.loopCount>${SampleInfoNoRecordFound.threadGroup.loopCount}</SampleInfoNoRecordFound.threadGroup.loopCount>
+                    <SampleInfoNoRecordFound.threadGroup.duration>${SampleInfoNoRecordFound.threadGroup.duration}</SampleInfoNoRecordFound.threadGroup.duration>
+                    <SampleInfoNoRecordFound.threadGroup.startUpDelay>${SampleInfoNoRecordFound.threadGroup.startUpDelay}</SampleInfoNoRecordFound.threadGroup.startUpDelay>
+                    <SampleInfoInvalidPid.threadGroup.threads>${SampleInfoInvalidPid.threadGroup.threads}</SampleInfoInvalidPid.threadGroup.threads>
+                    <SampleInfoInvalidPid.threadGroup.rampUp>${SampleInfoInvalidPid.threadGroup.rampUp}</SampleInfoInvalidPid.threadGroup.rampUp>
+                    <SampleInfoInvalidPid.threadGroup.loopCount>${SampleInfoInvalidPid.threadGroup.loopCount}</SampleInfoInvalidPid.threadGroup.loopCount>
+                    <SampleInfoInvalidPid.threadGroup.duration>${SampleInfoInvalidPid.threadGroup.duration}</SampleInfoInvalidPid.threadGroup.duration>
+                    <SampleInfoInvalidPid.threadGroup.startUpDelay>${SampleInfoInvalidPid.threadGroup.startUpDelay}</SampleInfoInvalidPid.threadGroup.startUpDelay>
+                    <SampleInfoNullPid.threadGroup.threads>${SampleInfoNullPid.threadGroup.threads}</SampleInfoNullPid.threadGroup.threads>
+                    <SampleInfoNullPid.threadGroup.rampUp>${SampleInfoNullPid.threadGroup.rampUp}</SampleInfoNullPid.threadGroup.rampUp>
+                    <SampleInfoNullPid.threadGroup.loopCount>${SampleInfoNullPid.threadGroup.loopCount}</SampleInfoNullPid.threadGroup.loopCount>
+                    <SampleInfoNullPid.threadGroup.duration>${SampleInfoNullPid.threadGroup.duration}</SampleInfoNullPid.threadGroup.duration>
+                    <SampleInfoNullPid.threadGroup.startUpDelay>${SampleInfoNullPid.threadGroup.startUpDelay}</SampleInfoNullPid.threadGroup.startUpDelay>
+                    <BearerTokenCreate.threadGroup.threads>${BearerTokenCreate.threadGroup.threads}</BearerTokenCreate.threadGroup.threads>
+                    <BearerTokenCreate.threadGroup.rampUp>${BearerTokenCreate.threadGroup.rampUp}</BearerTokenCreate.threadGroup.rampUp>
+                    <BearerTokenCreate.threadGroup.loopCount>${BearerTokenCreate.threadGroup.loopCount}</BearerTokenCreate.threadGroup.loopCount>
+                  </propertiesUser>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+        <pluginManagement>
+          <plugins>
+            <!--This plugin's configuration is used to store Eclipse m2e settings
+              only. It has no influence on the Maven build itself. -->
+            <plugin>
+              <groupId>org.eclipse.m2e</groupId>
+              <artifactId>lifecycle-mapping</artifactId>
+              <version>${lifecycle.mapping.version}</version>
+              <configuration>
+                <lifecycleMappingMetadata>
+                  <pluginExecutions>
+                    <pluginExecution>
+                      <pluginExecutionFilter>
+                        <groupId>com.lazerycode.jmeter</groupId>
+                        <artifactId>jmeter-maven-plugin</artifactId>
+                        <versionRange>${jmeter-maven-plugin.versionRange}</versionRange>
+                        <goals>
+                          <goal>configure</goal>
+                        </goals>
+                      </pluginExecutionFilter>
+                      <action>
+                        <ignore/>
+                      </action>
+                    </pluginExecution>
+                  </pluginExecutions>
+                </lifecycleMappingMetadata>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
+</project>
