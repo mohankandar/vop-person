@@ -1,73 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.wynd.vop.framework</groupId>
-    <artifactId>vop-framework-parentpom</artifactId>
-    <version>1.0.2</version>
-    <relativePath/>
-  </parent>
-
-
-  <groupId>com.wynd.vop.person</groupId>
-  <artifactId>vop-person-reactor</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>${project.artifactId}</name>
-  <description>Reactor POM for VOP Person Service</description>
-  <modules>
-    <module>vop-person</module>
-  </modules>
-
-  <repositories>
-    <repository>
-      <id>nexus3</id>
-      <name>VOP Nexus Repository</name>
-      <url>https://nexus.dev.bip.va.gov/repository/maven-public</url>
-    </repository>
-  </repositories>
-
-  <properties>
-    <!-- intentionally using old ant-contrib because newer version doesn't work with maven-antrun-plugin -->
-    <ant-contrib.version>20020829</ant-contrib.version>
-    <!-- Files excluded from SonarQube scans (to be removed when no longer needed) -->
-    <sonar.exclusions>**/SampleData1.java, **/SampleData2.java, **/PartnerHelper.java,
-      **/SampleByPidDomainToPartner.java, **/SampleByPidPartnerToDomain.java
-    </sonar.exclusions>
-    <java.version>11</java.version>
-    <sonar.java.source>${java.version}</sonar.java.source>
-  </properties>
+    <parent>
+        <groupId>com.wynd.vop.framework</groupId>
+        <artifactId>vop-framework-parentpom</artifactId>
+        <version>1.0.3</version>
+        <relativePath/>
+    </parent>
 
 
-  <profiles>
-    <profile>
-      <id>dependency-check</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.owasp</groupId>
-            <artifactId>dependency-check-maven</artifactId>
-            <version>6.5.0</version>
-            <configuration>
-              <formats>HTML,XML</formats>
-              <suppressionFile>./owasp-suppression.xml</suppressionFile>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+    <groupId>com.wynd.vop.person</groupId>
+    <artifactId>vop-person-reactor</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>Reactor POM for VOP Person Service</description>
+    <modules>
+        <module>vop-person</module>
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-cloud</id>
+            <name>Spring Cloud</name>
+            <url>https://github.com/spring-cloud</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>maven-central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <properties>
+        <!-- intentionally using old ant-contrib because newer version doesn't work with maven-antrun-plugin -->
+        <ant-contrib.version>20020829</ant-contrib.version>
+        <!-- Files excluded from SonarQube scans (to be removed when no longer needed) -->
+        <sonar.exclusions>**/SampleData1.java, **/SampleData2.java, **/PartnerHelper.java,
+            **/SampleByPidDomainToPartner.java, **/SampleByPidPartnerToDomain.java
+        </sonar.exclusions>
+        <java.version>8</java.version>
+        <sonar.java.source>${java.version}</sonar.java.source>
+    </properties>
+
+
+    <profiles>
+        <profile>
+            <id>dependency-check</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <version>6.5.0</version>
+                        <configuration>
+                            <formats>HTML,XML</formats>
+                            <suppressionFile>./owasp-suppression.xml</suppressionFile>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

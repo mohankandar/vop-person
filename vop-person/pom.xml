@@ -18,7 +18,7 @@
 
 
   <properties>
-    <vop-framework.version>1.0.2</vop-framework.version>
+    <vop-framework.version>1.0.3</vop-framework.version>
     <!-- Performance test Config - Need more setup- How to privide input sheet -->
     <domain>localhost</domain>
     <port>8080</port>
