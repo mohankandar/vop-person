@@ -316,14 +316,11 @@
           </execution>
         </executions>
       </plugin>
-<<<<<<< HEAD
       <plugin>
         <groupId>org.sonarsource.scanner.maven</groupId>
         <artifactId>sonar-maven-plugin</artifactId>
         <version>${sonar-maven-plugin.version}</version> <!-- Update this to match your SonarQube server compatibility -->
       </plugin>
-
-=======
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
@@ -342,9 +339,9 @@
 					<sourceDirectories>
 						<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
 					</sourceDirectories>
-					<excludes>
-						**/com/wynd/vop/**
-					</excludes>
+<!--					<excludes>-->
+<!--						**/com/wynd/vop/**-->
+<!--					</excludes>-->
 				</configuration>
 				<executions>
                     <execution>
@@ -360,8 +357,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>      
->>>>>>> b47148a9d63ac2812f16a4771f47c2f3254e06d1
+			</plugin>
     </plugins>
   </build>
   <profiles>
