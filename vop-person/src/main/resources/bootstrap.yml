@@ -11,6 +11,11 @@ spring.cloud.consul:
     defaultContext: application
     profileSeparator: ','
     format: FILES
+
+
+
+
+
     failFast: false #Set value as 'true' to throw exceptions during consul config lookup
     watch:
       enabled: false #Set to true if you wish for for consul to watch for config changes
@@ -40,7 +45,7 @@ spring.cloud.vault:
     backend: secret
     profile-separator: '/'
     default-context: application
-    application-name: "vbms-ratings/@project.name@"
+    application-name: "vop-sales/@project.name@"
   consul: 
     enabled: false  
     role: os-svc

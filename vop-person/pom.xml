@@ -51,6 +51,11 @@
     <BearerTokenCreate.threadGroup.threads>5</BearerTokenCreate.threadGroup.threads>
     <BearerTokenCreate.threadGroup.rampUp>1</BearerTokenCreate.threadGroup.rampUp>
     <BearerTokenCreate.threadGroup.loopCount>1</BearerTokenCreate.threadGroup.loopCount>
+    <!-- Sonar for project -->
+
+    <sonar.projectKey>com.example:your-project-name</sonar.projectKey>
+    <sonar.login>fbb170ad6d940df6b420e456348c7c1960ab31b1</sonar.login>
+    <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
   </properties>
 
   <dependencies>
@@ -310,6 +315,12 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>${sonar-maven-plugin.version}</version> <!-- Update this to match your SonarQube server compatibility -->
+      </plugin>
+
     </plugins>
   </build>
   <profiles>
@@ -655,6 +666,19 @@
           </plugins>
         </pluginManagement>
       </build>
+    </profile>
+    <profile>
+      <id>sonar</id>
+      <activation>
+        <property>
+          <name>sonar</name>
+        </property>
+      </activation>
+      <properties>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.login>fbb170ad6d940df6b420e456348c7c1960ab31b1</sonar.login>
+        <sonar.projectKey>com.wynd.vop.person:vop-person</sonar.projectKey>
+      </properties>
     </profile>
   </profiles>
 </project>
