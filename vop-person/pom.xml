@@ -19,6 +19,7 @@
 
   <properties>
     <vop-framework.version>1.0.3</vop-framework.version>
+    <checkstyle.config.location>${basedir}/vop_checkstyle_java8.xml</checkstyle.config.location>
     <!-- Performance test Config - Need more setup- How to privide input sheet -->
     <domain>localhost</domain>
     <port>8080</port>
@@ -315,12 +316,52 @@
           </execution>
         </executions>
       </plugin>
+<<<<<<< HEAD
       <plugin>
         <groupId>org.sonarsource.scanner.maven</groupId>
         <artifactId>sonar-maven-plugin</artifactId>
         <version>${sonar-maven-plugin.version}</version> <!-- Update this to match your SonarQube server compatibility -->
       </plugin>
 
+=======
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.1.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>8.9</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<violationSeverity>warning</violationSeverity>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>true</failsOnError>
+					<sourceDirectories>
+						<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+					</sourceDirectories>
+					<excludes>
+						**/com/wynd/vop/**
+					</excludes>
+				</configuration>
+				<executions>
+                    <execution>
+                        <id>checkstyle-check</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>      
+>>>>>>> b47148a9d63ac2812f16a4771f47c2f3254e06d1
     </plugins>
   </build>
   <profiles>
@@ -487,6 +528,33 @@
               </execution>
             </executions>
           </plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-checkstyle-plugin</artifactId>
+						<version>3.1.0</version>
+						<dependencies>
+							<dependency>
+								<groupId>com.puppycrawl.tools</groupId>
+								<artifactId>checkstyle</artifactId>
+								<version>8.9</version>
+							</dependency>
+						</dependencies>
+						<configuration>
+							<violationSeverity>warning</violationSeverity>
+							<consoleOutput>true</consoleOutput>
+							<failsOnError>true</failsOnError>
+							<sourceDirectories>
+								<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+							</sourceDirectories>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>		
         </plugins>
         <!-- the following is only necessary if you are using eclipse, STS and m2e -->
         <pluginManagement>
