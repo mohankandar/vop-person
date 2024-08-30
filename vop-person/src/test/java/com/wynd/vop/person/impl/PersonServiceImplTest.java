@@ -24,16 +24,16 @@ import static org.mockito.Mockito.when;
 
 public class PersonServiceImplTest {
 
-    PersonServiceImpl instance;
+  PersonServiceImpl instance;
 
-    @Mock
-    private VopLogger mockVopLogger;
-    @Mock
-    private CacheManager mockCacheManager;
-    @Mock
-    private Cache mockCache;
-    @Mock
-    private Cache.ValueWrapper mockValueWrapper;
+  @Mock
+  private VopLogger mockVopLogger;
+  @Mock
+  private CacheManager mockCacheManager;
+  @Mock
+  private Cache mockCache;
+  @Mock
+  private Cache.ValueWrapper mockValueWrapper;
 
 /* Mocks utilized with the DB Component included
     @Mock
@@ -47,28 +47,28 @@ public class PersonServiceImplTest {
     private PartnerHelper mockPartnerHelper;
 */
 
-    private final Long PARTICIPANT_ID = 1L;
-    private final String EXCEPTION_MESSAGE = "Test Exception Message";
+  private final Long PARTICIPANT_ID = 1L;
+  private final String EXCEPTION_MESSAGE = "Test Exception Message";
 
-    @Before
-    public void setUp() {
-        instance = new PersonServiceImpl();
+  @Before
+  public void setUp() {
+    instance = new PersonServiceImpl();
 
-        MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.initMocks(this);
 
-        try {
-            PersonTestUtils.setFinalStatic(PersonServiceImpl.class.getDeclaredField("LOGGER"), mockVopLogger);
-        } catch (Exception e) {
-            // Ignore and attempt to test without
-        }
-        ReflectionTestUtils.setField(instance, "cacheManager", mockCacheManager);
+    try {
+      PersonTestUtils.setFinalStatic(PersonServiceImpl.class.getDeclaredField("LOGGER"), mockVopLogger);
+    } catch (Exception e) {
+      // Ignore and attempt to test without
+    }
+    ReflectionTestUtils.setField(instance, "cacheManager", mockCacheManager);
         /* Mocks utilized with the DB Component included
         ReflectionTestUtils.setField(instance, "sampleDataHelper", mockSampleDataHelper);
          */
         /* Mocks utilized with the Partner Component included
         ReflectionTestUtils.setField(instance, "partnerHelper", mockPartnerHelper);
          */
-    }
+  }
 
     /* Test commented out by default, as it will break if a component is added without changing the setUp() function
     @Test
@@ -121,23 +121,23 @@ public class PersonServiceImplTest {
     }
      */
 
-    @Test
-    public void testSampleFindByParticipantID_Cached() {
-        // Setup
-        SampleDomainRequest sampleDomainRequest = createSampleDomainRequest();
-        SampleDomainResponse sampleDomainResponse = createSampleDomainResponse();
+  @Test
+  public void testSampleFindByParticipantID_Cached() {
+    // Setup
+    SampleDomainRequest sampleDomainRequest = createSampleDomainRequest();
+    SampleDomainResponse sampleDomainResponse = createSampleDomainResponse();
 
-        when(mockCacheManager.getCache(anyString())).thenReturn(mockCache);
-        when(mockCache.get(anyString())).thenReturn(mockValueWrapper);
-        when(mockCache.get(anyString(), eq(SampleDomainResponse.class))).thenReturn(sampleDomainResponse);
+    when(mockCacheManager.getCache(anyString())).thenReturn(mockCache);
+    when(mockCache.get(anyString())).thenReturn(mockValueWrapper);
+    when(mockCache.get(anyString(), eq(SampleDomainResponse.class))).thenReturn(sampleDomainResponse);
 
-        // Execute Test
-        SampleDomainResponse response = instance.sampleFindByParticipantID(sampleDomainRequest);
+    // Execute Test
+    SampleDomainResponse response = instance.sampleFindByParticipantId(sampleDomainRequest);
 
-        // Verifications
-        assertNotNull(response);
-        assertEquals(sampleDomainResponse, response);
-    }
+    // Verifications
+    assertNotNull(response);
+    assertEquals(sampleDomainResponse, response);
+  }
 
     /* Test commented out by default, as it will break if a component is added without changing the setUp() function
     @Test
@@ -309,59 +309,59 @@ public class PersonServiceImplTest {
     }
      */
 
-    @Test
-    public void testSampleFindByParticipantIDFallBack_Throwable() {
-        // Setup
-        SampleDomainRequest sampleDomainRequest = createSampleDomainRequest();
-        RuntimeException expectedRuntimeException = new RuntimeException(EXCEPTION_MESSAGE);
+  @Test
+  public void testSampleFindByParticipantIDFallBack_Throwable() {
+    // Setup
+    SampleDomainRequest sampleDomainRequest = createSampleDomainRequest();
+    RuntimeException expectedRuntimeException = new RuntimeException(EXCEPTION_MESSAGE);
 
-        // Execute Test
-        SampleDomainResponse response = instance.sampleFindByParticipantIDFallBack(sampleDomainRequest, expectedRuntimeException);
+    // Execute Test
+    SampleDomainResponse response = instance.sampleFindByParticipantIdFallBack(sampleDomainRequest, expectedRuntimeException);
 
-        // Verifications
-        assertNotNull(response);
-        assertNull(response.getSampleInfo());
-        assertEquals(1, response.getMessages().size());
-        assertEquals(MessageSeverity.WARN, response.getMessages().get(0).getSeverity());
-        assertEquals(HttpStatus.OK, response.getMessages().get(0).getHttpStatus());
-        assertEquals(MessageKeys.VOP_GLOBAL_GENERAL_EXCEPTION.getKey(), response.getMessages().get(0).getKey());
-    }
+    // Verifications
+    assertNotNull(response);
+    assertNull(response.getSampleInfo());
+    assertEquals(1, response.getMessages().size());
+    assertEquals(MessageSeverity.WARN, response.getMessages().get(0).getSeverity());
+    assertEquals(HttpStatus.OK, response.getMessages().get(0).getHttpStatus());
+    assertEquals(MessageKeys.VOP_GLOBAL_GENERAL_EXCEPTION.getKey(), response.getMessages().get(0).getKey());
+  }
 
-    @Test
-    public void testSampleFindByParticipantIDFallBack_NoThrowable() {
-        // Setup
-        SampleDomainRequest sampleDomainRequest = createSampleDomainRequest();
+  @Test
+  public void testSampleFindByParticipantIDFallBack_NoThrowable() {
+    // Setup
+    SampleDomainRequest sampleDomainRequest = createSampleDomainRequest();
 
-        // Execute Test
-        SampleDomainResponse response = instance.sampleFindByParticipantIDFallBack(sampleDomainRequest, null);
+    // Execute Test
+    SampleDomainResponse response = instance.sampleFindByParticipantIdFallBack(sampleDomainRequest, null);
 
-        // Verifications
-        verify(mockVopLogger).error(anyString(), any(Object.class));
-        assertNotNull(response);
-        assertNull(response.getSampleInfo());
-        assertEquals(1, response.getMessages().size());
-        assertEquals(MessageSeverity.WARN, response.getMessages().get(0).getSeverity());
-        assertEquals(HttpStatus.OK, response.getMessages().get(0).getHttpStatus());
-        assertEquals(MessageKeys.WARN_KEY.getKey(), response.getMessages().get(0).getKey());
-    }
+    // Verifications
+    verify(mockVopLogger).error(anyString(), any(Object.class));
+    assertNotNull(response);
+    assertNull(response.getSampleInfo());
+    assertEquals(1, response.getMessages().size());
+    assertEquals(MessageSeverity.WARN, response.getMessages().get(0).getSeverity());
+    assertEquals(HttpStatus.OK, response.getMessages().get(0).getHttpStatus());
+    assertEquals(MessageKeys.WARN_KEY.getKey(), response.getMessages().get(0).getKey());
+  }
 
-    private SampleDomainRequest createSampleDomainRequest() {
-        SampleDomainRequest sampleDomainRequest = new SampleDomainRequest();
-        sampleDomainRequest.setParticipantID(PARTICIPANT_ID);
+  private SampleDomainRequest createSampleDomainRequest() {
+    SampleDomainRequest sampleDomainRequest = new SampleDomainRequest();
+    sampleDomainRequest.setParticipantId(PARTICIPANT_ID);
 
-        return sampleDomainRequest;
-    }
+    return sampleDomainRequest;
+  }
 
-    private SampleDomainResponse createSampleDomainResponse() {
-        SampleInfoDomain sampleInfoDomain = new SampleInfoDomain();
-        sampleInfoDomain.setName("JOHN DOE");
-        sampleInfoDomain.setParticipantId(PARTICIPANT_ID);
+  private SampleDomainResponse createSampleDomainResponse() {
+    SampleInfoDomain sampleInfoDomain = new SampleInfoDomain();
+    sampleInfoDomain.setName("JOHN DOE");
+    sampleInfoDomain.setParticipantId(PARTICIPANT_ID);
 
-        SampleDomainResponse sampleDomainResponse = new SampleDomainResponse();
-        sampleDomainResponse.setSampleInfo(sampleInfoDomain);
-        sampleDomainResponse.addMessage(MessageSeverity.INFO, HttpStatus.OK, PersonMessageKeys.VOP_SAMPLE_SERVICE_IMPL_RESPONDED_WITH_MOCK_DATA,
-                "");
+    SampleDomainResponse sampleDomainResponse = new SampleDomainResponse();
+    sampleDomainResponse.setSampleInfo(sampleInfoDomain);
+    sampleDomainResponse.addMessage(MessageSeverity.INFO, HttpStatus.OK, PersonMessageKeys.VOP_SAMPLE_SERVICE_IMPL_RESPONDED_WITH_MOCK_DATA,
+        "");
 
-        return sampleDomainResponse;
-    }
+    return sampleDomainResponse;
+  }
 }

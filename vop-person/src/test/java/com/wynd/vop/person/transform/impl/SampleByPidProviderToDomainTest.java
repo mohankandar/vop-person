@@ -10,32 +10,32 @@ import static org.junit.Assert.assertNotNull;
 
 public class SampleByPidProviderToDomainTest {
 
-    SampleByPidProviderToDomain instance;
+  SampleByPidProviderToDomain instance;
 
-    private final Long PARTICIPANT_ID = 1L;
+  private final Long PARTICIPANT_ID = 1L;
 
-    @Before
-    public void setUp() {
-        instance = new SampleByPidProviderToDomain();
-    }
+  @Before
+  public void setUp() {
+    instance = new SampleByPidProviderToDomain();
+  }
 
-    @Test
-    public void testConvert() {
-        // Setup
-        SampleRequest sampleRequest = createSampleRequest();
+  @Test
+  public void testConvert() {
+    // Setup
+    SampleRequest sampleRequest = createSampleRequest();
 
-        // Execute Test
-        SampleDomainRequest request = instance.convert(sampleRequest);
+    // Execute Test
+    SampleDomainRequest request = instance.convert(sampleRequest);
 
-        // Verifications
-        assertNotNull(request);
-        assertEquals(PARTICIPANT_ID, request.getParticipantID());
-    }
+    // Verifications
+    assertNotNull(request);
+    assertEquals(PARTICIPANT_ID, request.getParticipantId());
+  }
 
-    private SampleRequest createSampleRequest() {
-        SampleRequest sampleRequest = new SampleRequest();
-        sampleRequest.setParticipantID(PARTICIPANT_ID);
+  private SampleRequest createSampleRequest() {
+    SampleRequest sampleRequest = new SampleRequest();
+    sampleRequest.setParticipantID(PARTICIPANT_ID);
 
-        return sampleRequest;
-    }
+    return sampleRequest;
+  }
 }

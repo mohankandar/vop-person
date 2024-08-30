@@ -1,10 +1,10 @@
 # https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md
 openapi: 3.0.1
 info:
-   version: 0.0.1-SNAPSHOT
-   title: VOP Person Service v1 API Documentation
-   description: An OpenAPI 3.0 specification for Person Service. Documentation is generated using OpenAPI Specification version 3.0.
-   license:
+  version: 0.0.1-SNAPSHOT
+  title: VOP Person Service v1 API Documentation
+  description: An OpenAPI 3.0 specification for Person Service. Documentation is generated using OpenAPI Specification version 3.0.
+  license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 tags:
@@ -13,12 +13,12 @@ tags:
   - name: token-resource
     description: Token Resource
 security:
-  - bearerAuth: []
+  - bearerAuth: [ ]
 paths:
   "/api/v1/person/pid":
     post:
       tags:
-      - Person
+        - Person
       summary: Retrieve Person information by Participant ID (PID) from mocked partner sample service.
       description: Will return a sample info object based on search by PID.
       operationId: sampleByPid
@@ -26,9 +26,9 @@ paths:
         description: sampleRequest
         required: true
         content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/SampleRequest'
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/SampleRequest'
       responses:
         '200':
           description: OK
@@ -37,15 +37,15 @@ paths:
               schema:
                 '$ref': '#/components/schemas/SampleResponse'
         '400':
-           '$ref': '#/components/responses/400'
+          '$ref': '#/components/responses/400'
         '401':
-           '$ref': '#/components/responses/401'
+          '$ref': '#/components/responses/401'
         '403':
-           '$ref': '#/components/responses/403'
+          '$ref': '#/components/responses/403'
         '500':
-           '$ref': '#/components/responses/500'
+          '$ref': '#/components/responses/500'
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       deprecated: false
   # The token path should not require any changes
 components:
@@ -94,10 +94,10 @@ components:
       title: SampleResponse
       description: Model for the sample response from the Service
       allOf:
-       - '$ref': '#/components/schemas/ProviderResponse'
-       - type: object
-         # all other properties specific to SampleResponse
-         properties:
+        - '$ref': '#/components/schemas/ProviderResponse'
+        - type: object
+          # all other properties specific to SampleResponse
+          properties:
             sampleInfo:
               description: The object representing the sample information
               '$ref': '#/components/schemas/SampleInfo'
@@ -110,8 +110,8 @@ components:
       title: Message
       description: Model that identifies a single message added to the repsonse. Property keys are enumerated in  the MessageKeys object.
       required:
-      - key
-      - severity
+        - key
+        - severity
       properties:
         key:
           # possible values enumerated by com.wynd.vop.framework.messages.MessageKeys
@@ -159,11 +159,11 @@ components:
         correlationIds:
           type: array
           example:
-          - 77779102^NI^200M^USVHA^P
-          - 912444689^PI^200BRLS^USVBA^A
-          - 6666345^PI^200CORP^USVBA^A
-          - 1105051936^NI^200DOD^USDOD^A
-          - 912444689^SS
+            - 77779102^NI^200M^USVHA^P
+            - 912444689^PI^200BRLS^USVBA^A
+            - 6666345^PI^200CORP^USVBA^A
+            - 1105051936^NI^200DOD^USDOD^A
+            - 912444689^SS
           description: The MVI correlation IDs list for the person
           items:
             type: string
@@ -224,12 +224,12 @@ components:
           schema:
             '$ref': '#/components/schemas/ProviderResponse'
           example:
-              messages:
-                - key: vop.framework.global.validator.method.argument.not.valid
-                  severity: ERROR
-                  status: 400
-                  text: Argument not valid.
-                  timestamp: 2019-08-29T18:40:22.766Z
+            messages:
+              - key: vop.framework.global.validator.method.argument.not.valid
+                severity: ERROR
+                status: 400
+                text: Argument not valid.
+                timestamp: 2019-08-29T18:40:22.766Z
     401:
       description: The authentication mechanism failed and hence access is forbidden.
       content:
@@ -237,12 +237,12 @@ components:
           schema:
             '$ref': '#/components/schemas/ProviderResponse'
           example:
-              messages:
-                - key: UNAUTHORIZED
-                  severity: ERROR
-                  status: 401
-                  text: No JWT Token in Header.
-                  timestamp: 2019-08-29T18:40:22.766Z
+            messages:
+              - key: UNAUTHORIZED
+                severity: ERROR
+                status: 401
+                text: No JWT Token in Header.
+                timestamp: 2019-08-29T18:40:22.766Z
     403:
       description: The request is not authorized.  Please verify credentials used
         in the request.
@@ -251,25 +251,25 @@ components:
           schema:
             '$ref': '#/components/schemas/ProviderResponse'
           example:
-              messages:
-                - key: vop.framework.not.authorized.exception
-                  severity: ERROR
-                  status: 403
-                  text: Access denied.
-                  timestamp: 2019-08-29T18:40:22.766Z
+            messages:
+              - key: vop.framework.not.authorized.exception
+                severity: ERROR
+                status: 403
+                text: Access denied.
+                timestamp: 2019-08-29T18:40:22.766Z
     500:
       description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
+        will contain a  "messages" element that will provide further information
+        on the error.  Please retry.  If problem persists, please contact support
+        with a copy of the Response.
       content:
         application/problem+json:
           schema:
             '$ref': '#/components/schemas/ProviderResponse'
           example:
-              messages:
-                - key: vop.framework.global.general.exception
-                  severity: ERROR
-                  status: 500
-                  text: Unexpected exception.
-                  timestamp: 2019-08-29T18:40:22.766Z
+            messages:
+              - key: vop.framework.global.general.exception
+                severity: ERROR
+                status: 500
+                text: Unexpected exception.
+                timestamp: 2019-08-29T18:40:22.766Z

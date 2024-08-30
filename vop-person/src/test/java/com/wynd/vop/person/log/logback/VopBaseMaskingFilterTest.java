@@ -13,39 +13,39 @@ import static org.junit.Assert.assertTrue;
 
 public class VopBaseMaskingFilterTest {
 
-	@Rule
-	public OutputCaptureRule capture = new OutputCaptureRule();
+  @Rule
+  public OutputCaptureRule capture = new OutputCaptureRule();
 
-	class TestVopBaseMaskingFilter extends VopMaskingFilter {
-		// test class
-	}
+  class TestVopBaseMaskingFilter extends VopMaskingFilter {
+    // test class
+  }
 
-	TestVopBaseMaskingFilter sharedBBMF;
+  TestVopBaseMaskingFilter sharedBBMF;
 
-	@Before
-	public void setUp() {
-		sharedBBMF = new TestVopBaseMaskingFilter();
-	}
+  @Before
+  public void setUp() {
+    sharedBBMF = new TestVopBaseMaskingFilter();
+  }
 
-	@Test
-	public final void testEvaluatePattern() {
+  @Test
+  public final void testEvaluatePattern() {
 
-		String msg = "Test Pattern 123-456 value";
-		VopLogger logger = VopLoggerFactory.getLogger(VopMaskingFilter.class);
-		logger.setLevel(Level.INFO);
-		logger.info(msg);
-		String log = capture.toString();
-		assertTrue(log.contains("Test Pattern ****456 value"));
-	}
+    String msg = "Test Pattern 123-456 value";
+    VopLogger logger = VopLoggerFactory.getLogger(VopMaskingFilter.class);
+    logger.setLevel(Level.INFO);
+    logger.info(msg);
+    String log = capture.toString();
+    assertTrue(log.contains("Test Pattern ****456 value"));
+  }
 
-	@Test
-	public final void testEvaluateDate() {
+  @Test
+  public final void testEvaluateDate() {
 
-		String msg = "Test Date Pattern 1234-56-78 value";
-		VopLogger logger = VopLoggerFactory.getLogger(VopMaskingFilter.class);
-		logger.setLevel(Level.INFO);
-		logger.info(msg);
-		String log = capture.toString();
-		assertTrue(log.contains("Test Date Pattern ********78 value"));
-	}
+    String msg = "Test Date Pattern 1234-56-78 value";
+    VopLogger logger = VopLoggerFactory.getLogger(VopMaskingFilter.class);
+    logger.setLevel(Level.INFO);
+    logger.info(msg);
+    String log = capture.toString();
+    assertTrue(log.contains("Test Date Pattern ********78 value"));
+  }
 }

@@ -2,7 +2,7 @@
 # Learn: https://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html#howto-use-yaml-for-external-properties
 info:
   build:
-    version:  "@project.version@"
+    version: "@project.version@"
     artifact: "@project.artifactId@"
     name: "@project.name@"
     description: "@project.description@"
@@ -29,8 +29,8 @@ vop.framework.security.opa:
 spring.profiles: local-int
 vop.framework.security.opa:
   urls:
-  - http://opa:8181/v1/data/vop/http/authz/admin
-  - http://opa:8181/v1/data/vop/http/authz/allow
+    - http://opa:8181/v1/data/vop/http/authz/admin
+    - http://opa:8181/v1/data/vop/http/authz/allow
   allVotersAbstainGrantAccess: false
 ---
 spring:
@@ -54,10 +54,10 @@ spring:
         # min-idle: 0   # Min number of idle connections to maintain
         # max-active: 8 # Max number of allocated connections (-1 for unlimited)
         max-wait: -1    # Max wait millis when pool is exhausted (-1 for unlimited)
-    # cluster:
+      # cluster:
       # max-redirects: # Maximum number of redirects to follow when executing commands across the cluster
       # nodes:         # Comma-separated list of "host:port" pairs to bootstrap from
-    # sentinel:
+      # sentinel:
       # master:  # Name of the Redis server
       # nodes:   # Comma-separated list of "host:port" pairs
   security:
@@ -100,8 +100,8 @@ vop-person:
   propSource: internal
   password: secret
   sampleProperty: >
-                  sampleProperty___env/profile:${vop-person.env}___propSource:
-                  ${vop-person.propSource}__password:${vop-person.password}
+    sampleProperty___env/profile:${vop-person.env}___propSource:
+    ${vop-person.propSource}__password:${vop-person.password}
 #-##################################################
 # Logging Level for packages
 #-##################################################
@@ -110,13 +110,13 @@ logging:
     feign: WARN
     # Add partner logging here, example:
     #com.wynd.vop.person.[partner-name].client: INFO
-#     com.wynd.vop.person: DEBUG
+    #     com.wynd.vop.person: DEBUG
     com.wynd.vop.framework.audit: DEBUG
     # Change Value to DEBUG to log all application logs
     com.wynd.vop.person: DEBUG
     # Change Value to DEBUG to log all VOP framework logs
     com.wynd.vop.framework: INFO
-#    org.apache.http: DEBUG
+    #    org.apache.http: DEBUG
     org.apache.coyote: DEBUG
     org.apache.http.impl.client: WARN
     org.apache.tomcat.util.buf: DEBUG
@@ -180,10 +180,10 @@ vop.framework:
     # enable/disable the swagger/openapi UI ...
     enabled: true
 
-##################################################
-# Feign or REST client connection timeout
-# when making inter-service or external REST calls
-##################################################
+  ##################################################
+  # Feign or REST client connection timeout
+  # when making inter-service or external REST calls
+  ##################################################
   rest:
     client:
       connectionTimeout: 30000
@@ -192,17 +192,16 @@ vop.framework:
       defaultMaxPerRoutePool: 10
       validateAfterInactivityPool: 10000
       connectionBufferSize: 4128
-##################################################
-# Cache
-##################################################
+  ##################################################
+  # Cache
+  ##################################################
   cache:
     defaultExpires: 86400 # (Seconds)
     expires:
-#     -
-#       name: Cache Name
-#       ttl:  TTL (In Seconds)
-      -
-        name: personService_@project.name@_@project.version@
+      #     -
+      #       name: Cache Name
+      #       ttl:  TTL (In Seconds)
+      - name: personService_@project.name@_@project.version@
         ttl: 1800
 ##################################################
 # Sleuth configuration

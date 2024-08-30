@@ -1,8 +1,12 @@
 # What is this repository for?
 
-This repository contains the implementation of the VOP Person Service, which is a part of the VOP Platform. The service is designed to manage person-related data and operations, adhering to the service patterns defined by the VOP Platform. The repository includes all necessary dependencies, plugins, and configurations required to build, test, and deploy the VOP Person Service.
+This repository contains the implementation of the VOP Person Service, which is a part of the VOP Platform. The service
+is designed to manage person-related data and operations, adhering to the service patterns defined by the VOP Platform.
+The repository includes all necessary dependencies, plugins, and configurations required to build, test, and deploy the
+VOP Person Service.
 
-For detailed information regarding development patterns, usage, and capabilities provided by the VOP Person Service, refer to the [vop-person README.md].
+For detailed information regarding development patterns, usage, and capabilities provided by the VOP Person Service,
+refer to the [vop-person README.md].
 
 For information on framework release notes, -- TODO
 
@@ -21,11 +25,14 @@ This module includes several dependencies to support various functionalities:
 
 - **vop-framework-libraries**: Common libraries provided by the VOP framework.
 - **vop-framework-autoconfigure**: Auto-configuration utilities for the VOP framework.
-- **Spring Boot Starters**: Various Spring Boot starters like `spring-boot-starter-tomcat`, `spring-boot-starter-aop`, etc., for essential functionalities.
-- **Spring Cloud**: Dependencies like `spring-cloud-starter-bootstrap` and `spring-cloud-starter-sleuth` for cloud configuration and distributed tracing.
+- **Spring Boot Starters**: Various Spring Boot starters like `spring-boot-starter-tomcat`, `spring-boot-starter-aop`,
+  etc., for essential functionalities.
+- **Spring Cloud**: Dependencies like `spring-cloud-starter-bootstrap` and `spring-cloud-starter-sleuth` for cloud
+  configuration and distributed tracing.
 - **Jackson**: For JSON processing in JAX-RS services.
 - **Logstash Logback Encoder**: For formatting log messages in Logstash format.
-- **JUnit & Spring Boot Test**: For testing the application, including JUnit 4 and 5 compatibility and JSON-based assertions.
+- **JUnit & Spring Boot Test**: For testing the application, including JUnit 4 and 5 compatibility and JSON-based
+  assertions.
 
 # Build & Test Plugins
 

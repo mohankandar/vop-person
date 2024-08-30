@@ -27,8 +27,8 @@ public class PersonServiceException extends VopRuntimeException {
    *                 {0})
    */
   public PersonServiceException(final MessageKey key, final MessageSeverity severity,
-      final HttpStatus status,
-      final String... params) {
+                                final HttpStatus status,
+                                final String... params) {
     super(key, severity, status, params);
   }
 
@@ -49,8 +49,8 @@ public class PersonServiceException extends VopRuntimeException {
    * @see RuntimeException#RuntimeException(String, Throwable)
    */
   public PersonServiceException(final MessageKey key, final MessageSeverity severity,
-      final HttpStatus status,
-      final Throwable cause, final String... params) {
+                                final HttpStatus status,
+                                final Throwable cause, final String... params) {
     super(key, severity, status, cause, params);
   }
 }

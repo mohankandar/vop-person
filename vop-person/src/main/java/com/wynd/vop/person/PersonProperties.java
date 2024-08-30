@@ -8,10 +8,11 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * The Class ApplicationConfig serves 2 purposes.
- * (1) It provides a bean that classes can use to get to our properties.
- * (2) It allows the actuator and the /configprops endpoint to surface all bound/bindable properties (as documentation)
- *
+ * The Class ApplicationConfig serves 2 purposes:
+ * <ol>
+ * <li>It provides a bean that classes can use to access our properties.</li>
+ * <li>It allows the actuator and the /configprops endpoint to surface all bound/bindable properties as documentation.</li>
+ * </ol>
  */
 @Configuration
 @EnableConfigurationProperties
@@ -19,64 +20,111 @@ import org.springframework.context.annotation.Configuration;
 @RefreshScope // refresh properties after app running
 public class PersonProperties {
 
-	@NotNull
-	private String env;
+  @NotNull
+  private String env;
 
-	@NotNull
-	private String propSource;
+  @NotNull
+  private String propSource;
 
-	@NotNull
-	private String sampleProperty;
+  @NotNull
+  private String sampleProperty;
 
-	@NotNull
-	private String password;
+  @NotNull
+  private String password;
 
-	// UIEnablement
-	// The usage of the word orIgIn in all lower case is problematic in the gen.sh script.
-	// After generation, the scripts will replace with all lower case version or camel case version and uncomment as necessary.
-	@NotNull
-	private String[] orIgIns;
+  // UIEnablement
+  // The usage of the word orIgIn in all lower case is problematic in the gen.sh script.
+  // After generation, the scripts will replace with all lower case version or camel case version and uncomment as necessary.
+  @NotNull
+  private String[] orIgIns;
 
-	public String getEnv() {
-		return env;
-	}
+  /**
+   * Gets the environment.
+   *
+   * @return the environment.
+   */
+  public String getEnv() {
+    return env;
+  }
 
-	public void setEnv(String env) {
-		this.env = env;
-	}
+  /**
+   * Sets the environment.
+   *
+   * @param env the environment to set.
+   */
+  public void setEnv(String env) {
+    this.env = env;
+  }
 
-	public String getPropSource() {
-		return propSource;
-	}
+  /**
+   * Gets the property source.
+   *
+   * @return the property source.
+   */
+  public String getPropSource() {
+    return propSource;
+  }
 
-	public void setPropSource(String propSource) {
-		this.propSource = propSource;
-	}
+  /**
+   * Sets the property source.
+   *
+   * @param propSource the property source to set.
+   */
+  public void setPropSource(String propSource) {
+    this.propSource = propSource;
+  }
 
-	public String getSampleProperty() {
-		return sampleProperty;
-	}
+  /**
+   * Gets the sample property.
+   *
+   * @return the sample property.
+   */
+  public String getSampleProperty() {
+    return sampleProperty;
+  }
 
-	public void setSampleProperty(String sampleProperty) {
-		this.sampleProperty = sampleProperty;
-	}
+  /**
+   * Sets the sample property.
+   *
+   * @param sampleProperty the sample property to set.
+   */
+  public void setSampleProperty(String sampleProperty) {
+    this.sampleProperty = sampleProperty;
+  }
 
-	public String getPassword() {
-		return password;
-	}
+  /**
+   * Gets the password.
+   *
+   * @return the password.
+   */
+  public String getPassword() {
+    return password;
+  }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  /**
+   * Sets the password.
+   *
+   * @param password the password to set.
+   */
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-// UIEnablement
-// The usage of the word orIgIn in all lower case is problematic in the gen.sh script.
-// After generation, the scripts will replace with all lower case version or camel case version and uncomment as necessary.
-	public String[] getOrIgIns() {
-		return orIgIns;
-	}
+  /**
+   * Gets the origins (orIgIns).
+   *
+   * @return the origins.
+   */
+  public String[] getOrIgIns() {
+    return orIgIns;
+  }
 
-	public void setOrIgIns(String[] orIgIns) {
-		this.orIgIns = orIgIns;
-	}
+  /**
+   * Sets the origins (orIgIns).
+   *
+   * @param orIgIns the origins to set.
+   */
+  public void setOrIgIns(String[] orIgIns) {
+    this.orIgIns = orIgIns;
+  }
 }

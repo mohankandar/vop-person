@@ -9,23 +9,30 @@ package com.wynd.vop.person.utils;
  * for their "value" definitions. For example:<br/>
  * {@code @CachePut(value = CacheConstants.CACHE_NAME_STATES, key = "#root.methodName", unless = ...}
  * </p>
- *
  */
 public class CacheConstants {
 
-	/** Cache name separator */
-	private static final String CACHE_NAME_SEPARATOR = "_";
+  /**
+   * Cache name separator
+   */
+  private static final String CACHE_NAME_SEPARATOR = "_";
 
-	/** Cache name suffix */
-	private static final String CACHE_NAME_SUFFIX =
-			CACHE_NAME_SEPARATOR + ApplicationInfo.PROJECT_NAME + CACHE_NAME_SEPARATOR + ApplicationInfo.VERSION;
+  /**
+   * Cache name suffix
+   */
+  private static final String CACHE_NAME_SUFFIX =
+      CACHE_NAME_SEPARATOR + ApplicationInfo.PROJECT_NAME + CACHE_NAME_SEPARATOR + ApplicationInfo.VERSION;
 
-	/** Cache name for the service */
-	public static final String CACHENAME_PERSON_SERVICE = "personService" + CACHE_NAME_SUFFIX;
+  /**
+   * Cache name for the service
+   */
+  public static final String CACHENAME_PERSON_SERVICE = "personService" + CACHE_NAME_SUFFIX;
 
-	/** No instantiation */
-	private CacheConstants() {
-		throw new UnsupportedOperationException("CacheConstants is a static class. Do not instantiate it.");
-	}
+  /**
+   * No instantiation
+   */
+  private CacheConstants() {
+    throw new UnsupportedOperationException("CacheConstants is a static class. Do not instantiate it.");
+  }
 
 }

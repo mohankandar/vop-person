@@ -21,80 +21,80 @@ import static org.mockito.Mockito.when;
 
 public class PersonResourceTest {
 
-    PersonResource instance;
+  PersonResource instance;
 
-    @Mock
-    private VopLogger mockVopLogger;
-    @Mock
-    private BuildProperties mockBuildProperties;
-    @Mock
-    private WebDataBinder mockWebDataBinder;
-    @Mock
-    private SampleRequest mockSampleRequest;
-    @Mock
-    private SampleResponse mockSampleResponse;
-    @Mock
-    private ServiceAdapter mockServiceAdapter;
+  @Mock
+  private VopLogger mockVopLogger;
+  @Mock
+  private BuildProperties mockBuildProperties;
+  @Mock
+  private WebDataBinder mockWebDataBinder;
+  @Mock
+  private SampleRequest mockSampleRequest;
+  @Mock
+  private SampleResponse mockSampleResponse;
+  @Mock
+  private ServiceAdapter mockServiceAdapter;
 
-    @Before
-    public void setUp() {
-        instance = new PersonResource();
+  @Before
+  public void setUp() {
+    instance = new PersonResource();
 
-        MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.initMocks(this);
 
-        try {
-            PersonTestUtils.setFinalStatic(PersonResource.class.getDeclaredField("LOGGER"), mockVopLogger);
-        } catch (Exception e) {
-            // Ignore and attempt to test without
-        }
-        ReflectionTestUtils.setField(instance, "buildProperties", mockBuildProperties);
-        ReflectionTestUtils.setField(instance, "serviceAdapter", mockServiceAdapter);
+    try {
+      PersonTestUtils.setFinalStatic(PersonResource.class.getDeclaredField("LOGGER"), mockVopLogger);
+    } catch (Exception e) {
+      // Ignore and attempt to test without
     }
+    ReflectionTestUtils.setField(instance, "buildProperties", mockBuildProperties);
+    ReflectionTestUtils.setField(instance, "serviceAdapter", mockServiceAdapter);
+  }
 
-    @Test
-    public void testPostConstruct() {
-        // Setup
-        String testString1 = "Test1";
-        String testString2 = "Test2";
-        String testString3 = "Test3";
-        String testString4 = "Test4";
-        when(mockBuildProperties.getName()).thenReturn(testString1);
-        when(mockBuildProperties.getVersion()).thenReturn(testString2);
-        when(mockBuildProperties.getArtifact()).thenReturn(testString3);
-        when(mockBuildProperties.getGroup()).thenReturn(testString4);
+  @Test
+  public void testPostConstruct() {
+    // Setup
+    String testString1 = "Test1";
+    String testString2 = "Test2";
+    String testString3 = "Test3";
+    String testString4 = "Test4";
+    when(mockBuildProperties.getName()).thenReturn(testString1);
+    when(mockBuildProperties.getVersion()).thenReturn(testString2);
+    when(mockBuildProperties.getArtifact()).thenReturn(testString3);
+    when(mockBuildProperties.getGroup()).thenReturn(testString4);
 
-        // Execute Test
-        instance.postConstruct();
+    // Execute Test
+    instance.postConstruct();
 
-        // Verifications
-        verify(mockVopLogger).info(testString1);
-        verify(mockVopLogger).info(testString2);
-        verify(mockVopLogger).info(testString3);
-        verify(mockVopLogger).info(testString4);
-    }
+    // Verifications
+    verify(mockVopLogger).info(testString1);
+    verify(mockVopLogger).info(testString2);
+    verify(mockVopLogger).info(testString3);
+    verify(mockVopLogger).info(testString4);
+  }
 
-    @Test
-    public void testInitBinder() {
-        // Setup
+  @Test
+  public void testInitBinder() {
+    // Setup
 
-        // Execute Test
-        instance.initBinder(mockWebDataBinder);
+    // Execute Test
+    instance.initBinder(mockWebDataBinder);
 
-        // Verifications
-        verify(mockWebDataBinder).setAllowedFields("sampleInfo", "name", "participantId");
-    }
+    // Verifications
+    verify(mockWebDataBinder).setAllowedFields("sampleInfo", "name", "participantId");
+  }
 
-    @Test
-    public void testSampleByPid() {
-        // Setup
-        when(mockServiceAdapter.sampleByPid(mockSampleRequest)).thenReturn(mockSampleResponse);
+  @Test
+  public void testSampleByPid() {
+    // Setup
+    when(mockServiceAdapter.sampleByPid(mockSampleRequest)).thenReturn(mockSampleResponse);
 
-        // Execute Test
-        ResponseEntity<SampleResponse> response = instance.sampleByPid(mockSampleRequest);
+    // Execute Test
+    ResponseEntity<SampleResponse> response = instance.sampleByPid(mockSampleRequest);
 
-        // Verifications
-        assertNotNull(response);
-        assertEquals(mockSampleResponse, response.getBody());
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
+    // Verifications
+    assertNotNull(response);
+    assertEquals(mockSampleResponse, response.getBody());
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+  }
 }

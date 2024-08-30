@@ -1,9 +1,9 @@
-spring: 
-  application: 
+spring:
+  application:
     name: "@project.name@"
-  config: 
+  config:
     name: "@project.name@"
-spring.cloud.consul: 
+spring.cloud.consul:
   enabled: false
   config:
     enabled: false
@@ -23,8 +23,8 @@ spring.cloud.consul:
   host: localhost
   port: 8500
   #tls:
-    #key-store-path: #Configuration for TLS in higher environments
-  discovery: 
+  #key-store-path: #Configuration for TLS in higher environments
+  discovery:
     enabled: false #Set Value as 'true' to enable consul discovery
     register: false #Set Value as 'true' to Register as a service in consul
     health-check-interval: 10s
@@ -46,8 +46,8 @@ spring.cloud.vault:
     profile-separator: '/'
     default-context: application
     application-name: "vop-sales/@project.name@"
-  consul: 
-    enabled: false  
+  consul:
+    enabled: false
     role: os-svc
     backend: consul
     token-property: spring.cloud.consul.token
@@ -57,4 +57,4 @@ spring.cloud.vault:
 # If you are relying on overriding, you will need to set spring.main.allow-bean-definition-overriding to true.
 # https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.1-Release-Notes
 spring.main:
-     allow-bean-definition-overriding: true
+  allow-bean-definition-overriding: true

@@ -21,114 +21,114 @@ import static org.mockito.Mockito.when;
 
 public class ServiceAdapterTest {
 
-    ServiceAdapter instance;
+  ServiceAdapter instance;
 
-    @Mock
-    private VopLogger mockVopLogger;
-    @Mock
-    private SampleByPidProviderToDomain mockSampleByPidProviderToDomain;
-    @Mock
-    private SampleByPidDomainToProvider mockSampleByPidDomainToProvider;
-    @Mock
-    private PersonService mockPersonService;
-    @Mock
-    private SampleRequest mockSampleRequest;
-    @Mock
-    private SampleDomainRequest mockSampleDomainRequest;
-    @Mock
-    private SampleDomainResponse mockSampleDomainResponse;
-    @Mock
-    private SampleResponse mockSampleResponse;
+  @Mock
+  private VopLogger mockVopLogger;
+  @Mock
+  private SampleByPidProviderToDomain mockSampleByPidProviderToDomain;
+  @Mock
+  private SampleByPidDomainToProvider mockSampleByPidDomainToProvider;
+  @Mock
+  private PersonService mockPersonService;
+  @Mock
+  private SampleRequest mockSampleRequest;
+  @Mock
+  private SampleDomainRequest mockSampleDomainRequest;
+  @Mock
+  private SampleDomainResponse mockSampleDomainResponse;
+  @Mock
+  private SampleResponse mockSampleResponse;
 
-    @Before
-    public void setUp() {
-        instance = new ServiceAdapter();
+  @Before
+  public void setUp() {
+    instance = new ServiceAdapter();
 
-        MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.initMocks(this);
 
-        try {
-            PersonTestUtils.setFinalStatic(ServiceAdapter.class.getDeclaredField("LOGGER"), mockVopLogger);
-        } catch (Exception e) {
-            // Ignore and attempt to test without
-        }
-        ReflectionTestUtils.setField(instance, "sampleByPidProvider2Domain", mockSampleByPidProviderToDomain);
-        ReflectionTestUtils.setField(instance, "sampleByPidDomain2Provider", mockSampleByPidDomainToProvider);
-        ReflectionTestUtils.setField(instance, "personService", mockPersonService);
+    try {
+      PersonTestUtils.setFinalStatic(ServiceAdapter.class.getDeclaredField("LOGGER"), mockVopLogger);
+    } catch (Exception e) {
+      // Ignore and attempt to test without
+    }
+    ReflectionTestUtils.setField(instance, "sampleByPidProvider2Domain", mockSampleByPidProviderToDomain);
+    ReflectionTestUtils.setField(instance, "sampleByPidDomain2Provider", mockSampleByPidDomainToProvider);
+    ReflectionTestUtils.setField(instance, "personService", mockPersonService);
+  }
+
+  @Test
+  public void testPostConstruct_Success() {
+    // Setup
+
+    // Execute Test
+    try {
+      instance.postConstruct();
+    } catch (VopValidationRuntimeException e) {
+      // Verifications
+      fail("A VopValidationRuntimeException should not have been thrown here.");
+    }
+  }
+
+  @Test
+  public void testPostConstruct_Failure1() {
+    // Setup
+    ReflectionTestUtils.setField(instance, "sampleByPidProvider2Domain", null);
+
+    // Execute Test
+    try {
+      instance.postConstruct();
+    } catch (VopValidationRuntimeException e) {
+      return;
     }
 
-    @Test
-    public void testPostConstruct_Success() {
-        // Setup
+    // Verifications
+    fail("A VopValidationRuntimeException should have been thrown here.");
+  }
 
-        // Execute Test
-        try {
-            instance.postConstruct();
-        } catch (VopValidationRuntimeException e) {
-            // Verifications
-            fail("A VopValidationRuntimeException should not have been thrown here.");
-        }
+  @Test
+  public void testPostConstruct_Failure2() {
+    // Setup
+    ReflectionTestUtils.setField(instance, "sampleByPidDomain2Provider", null);
+
+    // Execute Test
+    try {
+      instance.postConstruct();
+    } catch (VopValidationRuntimeException e) {
+      return;
     }
 
-    @Test
-    public void testPostConstruct_Failure1() {
-        // Setup
-        ReflectionTestUtils.setField(instance, "sampleByPidProvider2Domain", null);
+    // Verifications
+    fail("A VopValidationRuntimeException should have been thrown here.");
+  }
 
-        // Execute Test
-        try {
-            instance.postConstruct();
-        } catch (VopValidationRuntimeException e) {
-            return;
-        }
+  @Test
+  public void testPostConstruct_Failure3() {
+    // Setup
+    ReflectionTestUtils.setField(instance, "personService", null);
 
-        // Verifications
-        fail("A VopValidationRuntimeException should have been thrown here.");
+    // Execute Test
+    try {
+      instance.postConstruct();
+    } catch (VopValidationRuntimeException e) {
+      return;
     }
 
-    @Test
-    public void testPostConstruct_Failure2() {
-        // Setup
-        ReflectionTestUtils.setField(instance, "sampleByPidDomain2Provider", null);
+    // Verifications
+    fail("A VopValidationRuntimeException should have been thrown here.");
+  }
 
-        // Execute Test
-        try {
-            instance.postConstruct();
-        } catch (VopValidationRuntimeException e) {
-            return;
-        }
+  @Test
+  public void testSampleByPid() {
+    // Setup
+    when(mockSampleByPidProviderToDomain.convert(mockSampleRequest)).thenReturn(mockSampleDomainRequest);
+    when(mockPersonService.sampleFindByParticipantId(mockSampleDomainRequest)).thenReturn(mockSampleDomainResponse);
+    when(mockSampleByPidDomainToProvider.convert(mockSampleDomainResponse)).thenReturn(mockSampleResponse);
 
-        // Verifications
-        fail("A VopValidationRuntimeException should have been thrown here.");
-    }
+    // Execute Test
+    SampleResponse response = instance.sampleByPid(mockSampleRequest);
 
-    @Test
-    public void testPostConstruct_Failure3() {
-        // Setup
-        ReflectionTestUtils.setField(instance, "personService", null);
-
-        // Execute Test
-        try {
-            instance.postConstruct();
-        } catch (VopValidationRuntimeException e) {
-            return;
-        }
-
-        // Verifications
-        fail("A VopValidationRuntimeException should have been thrown here.");
-    }
-
-    @Test
-    public void testSampleByPid() {
-        // Setup
-        when(mockSampleByPidProviderToDomain.convert(mockSampleRequest)).thenReturn(mockSampleDomainRequest);
-        when(mockPersonService.sampleFindByParticipantID(mockSampleDomainRequest)).thenReturn(mockSampleDomainResponse);
-        when(mockSampleByPidDomainToProvider.convert(mockSampleDomainResponse)).thenReturn(mockSampleResponse);
-
-        // Execute Test
-        SampleResponse response = instance.sampleByPid(mockSampleRequest);
-
-        // Verifications
-        assertNotNull(response);
-        assertEquals(mockSampleResponse, response);
-    }
+    // Verifications
+    assertNotNull(response);
+    assertEquals(mockSampleResponse, response);
+  }
 }

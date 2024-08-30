@@ -14,49 +14,49 @@ import static org.junit.Assert.assertEquals;
 
 
 public class PersonServiceExceptionTest {
-	PersonServiceException instance;
+  PersonServiceException instance;
 
-	private static final String NAME = "NO_KEY";
-	private static final String MESSAGE = "NO_KEY";
+  private static final String NAME = "NO_KEY";
+  private static final String MESSAGE = "NO_KEY";
 
-	@Before
-	public void setUp() {
-		instance = new PersonServiceException(MessageKeys.NO_KEY, MessageSeverity.ERROR, null);
-	}
+  @Before
+  public void setUp() {
+    instance = new PersonServiceException(MessageKeys.NO_KEY, MessageSeverity.ERROR, null);
+  }
 
-	/**
-	 * Test of getSeverity method, of class PersonServiceException.
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testGetSeverity() {
-		System.out.println("getSeverity");
-		MessageSeverity expResult = MessageSeverity.ERROR;
-		MessageSeverity result = instance.getExceptionData().getSeverity();
-		assertEquals(expResult, result);
-	}
+  /**
+   * Test of getSeverity method, of class PersonServiceException.
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testGetSeverity() {
+    System.out.println("getSeverity");
+    MessageSeverity expResult = MessageSeverity.ERROR;
+    MessageSeverity result = instance.getExceptionData().getSeverity();
+    assertEquals(expResult, result);
+  }
 
-	/**
-	 * Test of getKey method, of class PersonServiceException.
-	 */
-	@Test
-	public void testGetKey() {
-		System.out.println("getKey");
-		String expResult = NAME;
-		String result = instance.getExceptionData().getKey();
-		assertEquals(expResult, result);
-	}
+  /**
+   * Test of getKey method, of class PersonServiceException.
+   */
+  @Test
+  public void testGetKey() {
+    System.out.println("getKey");
+    String expResult = NAME;
+    String result = instance.getExceptionData().getKey();
+    assertEquals(expResult, result);
+  }
 
-	/**
-	 * Test of getMessage method, of class PersonServiceException.
-	 */
-	@Test
-	public void testGetMessage() {
-		System.out.println("getMessage");
-		String expResult = MESSAGE;
-		String result = instance.getMessage();
-		assertEquals(expResult, result);
+  /**
+   * Test of getMessage method, of class PersonServiceException.
+   */
+  @Test
+  public void testGetMessage() {
+    System.out.println("getMessage");
+    String expResult = MESSAGE;
+    String result = instance.getMessage();
+    assertEquals(expResult, result);
 
-	}
+  }
 }
